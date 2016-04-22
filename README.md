@@ -5,12 +5,12 @@ With this tool you can:
 
 * see list of participants of all QE tv episodes
 * find out list of episodes where particular person was on the show including:
-** links to the recordings of the show &mdash; mostly from [VK group "Quite Interesting"](http://vk.com/quiteinteresting)) with Russian subtitles, but also with English subtitles
-** air date of each show is available in a popup
+  * links to the recordings of the show &mdash; mostly from [VK group "Quite Interesting"](http://vk.com/quiteinteresting)) with Russian subtitles, but also with English subtitles
+  * air date of each show is available in a popup
 
 ## Usage
 
-There are two parts of this project: back-end and front-end. Back-end is written on Python and front-end is on Javascript. Also there is an `data.csv` file which was created based on information from [Wikipedia]((https://en.wikipedia.org/wiki/QI)).
+There are two parts of this project: back-end and front-end. Back-end is written on Python and front-end is on Javascript. Also there is an `data.csv` file which was created based on information from [Wikipedia](https://en.wikipedia.org/wiki/QI).
 
 ### Back-end
 

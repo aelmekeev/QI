@@ -33,6 +33,12 @@ def format_date(date_string):
   else:
     return date_string
 
+def get_link(link):
+  if 'album-' in link and 'video-' in link:
+    return link[44:]
+  else:
+    return link
+
 
 def add_episode(row, current_season):
   episode = {}
@@ -45,10 +51,11 @@ def add_episode(row, current_season):
   if len(number) != 1:
     episode['episode_total'] = number[1][1:-1]
   
-  if row[LINK_ENG] != '': episode['eng'] = row[LINK_ENG][44:]
-  if row[LINK_RUS] != '': episode['rus'] = row[LINK_RUS][44:]
-  if row[LINK_ENG_XL] != '': episode['eng_xl'] = row[LINK_ENG_XL][44:]
-  if row[LINK_RUS_XL] != '': episode['rus_xl'] = row[LINK_RUS_XL][44:]
+  if row[LINK_ENG] != '': episode['eng'] = get_link(row[LINK_ENG])
+  if row[LINK_RUS] != '': episode['rus'] = get_link(row[LINK_ENG])
+  if row[LINK_ENG_XL] != '': episode['eng_xl'] = get_link(row[LINK_ENG])
+  if row[LINK_RUS_XL] != '': episode['rus_xl'] = get_link(row[LINK_ENG])
+  if row[NOTE] != '': episode['note'] = row[NOTE]
 
   air_dates = row[AIR_DATE].split('\n')
   for date in air_dates:

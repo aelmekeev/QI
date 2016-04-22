@@ -40,8 +40,7 @@ function addShowLink(showBlock, link, text, addComma) {
   return false;
 }
 
-function createShowWithSeveralLinks(text, guestId, show) {
-  var showBlock = $('#guest' + guestId + 'shows div:last()');
+function createShowWithSeveralLinks(showBlock, text, guestId, show) {
   showBlock.append($('<span />', {
     text: text + ' ('
   }));
@@ -57,15 +56,34 @@ function createShowWithSeveralLinks(text, guestId, show) {
   }));
 }
 
-function createShow(showId, guestId) {
-  $('#guest' + guestId + 'shows').append($('<div />'));
+function getHintText(show) {
+  var hint = '';
 
+  if (typeof show.air !== 'undefined') {
+    hint += 'Air date: ' + show.air
+  }
+  if (typeof show.air_xl !== 'undefined') {
+    hint += (hint != '' ? '\n' : '') + 'XL air date: ' + show.air_xl;
+  }
+
+  return hint;
+}
+
+function createShow(showId, guestId) {
   var guest = guests[guestId]
   var show = shows[showId];
   var text = show.name + ' (series ' + show.season + ' episode ' + show.episode + ')'
+  if (typeof show.note !== 'undefined') {
+    text += ' (' + show.note + ')'
+  }
   if ($.inArray(showId, guest.winner) != -1) {
     text += ' (winner)';
   }
+
+  $('#guest' + guestId + 'shows').append($('<div />', {
+    title: getHintText(show)
+  }));
+  var showBlock = $('#guest' + guestId + 'shows div:last()');
 
   var l1 = show.eng;
   var l2 = show.eng_xl;
@@ -77,21 +95,20 @@ function createShow(showId, guestId) {
   var l4empty = typeof show.rus_xl === 'undefined';
 
   if (l1empty && l2empty && l3empty && l4empty) {
-    $('#guest' + guestId + 'shows div:last()').append($('<span />', {
+    showBlock.append($('<span />', {
       text: text
     }));
   } else {
     var singleLink = getSingleLink(l1, l2, l3, l4, l1empty, l2empty, l3empty, l4empty);
 
     if (singleLink != '') {
-      console.log(singleLink);
-      $('#guest' + guestId + 'shows div:last()').append($('<a />', {
+      showBlock.append($('<a />', {
         href: getLink(singleLink),
         target: '_blank',
         text: text
       }));
     } else {
-      createShowWithSeveralLinks(text, guestId, show)
+      createShowWithSeveralLinks(showBlock, text, guestId, show)
     }
   }
 }
@@ -149,4 +166,8 @@ $('#filter').keyup(function() {
   }
 
   return false;
+});
+
+$('#reset').click(function() {
+  $('#filter').val('').keyup();
 });

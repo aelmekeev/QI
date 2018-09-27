@@ -134,42 +134,44 @@ function createGuestBlock(guestId) {
     return block;
 }
 
-const container = $('#output');
+$(function() {
+    const container = $('#output');
 
-for (var i = 0; i < guests.length; i++) {
-    container.append(createGuestBlock(i));
-    addShows(i);
-}
-
-accordion = container.accordion({
-    heightStyle: 'content'
-});
-
-$('#filter').keyup(function () {
-    var filterText = $(this).val();
-    var headers = $('#output h3');
-    var shows = $('#output .shows[aria-hidden="false"]');
-
-    if (filterText.length > 0) {
-        var containing = headers.filter(function () {
-            var regex = new RegExp('\\b' + filterText, 'i');
-            return regex.test($(this).text());
-        }).slideDown();
-
-        headers.not(containing).slideUp();
-        if (shows.prev().not(containing).length > 1) {
-            shows.show();
-        } else {
-            shows.hide();
-        }
-    } else {
-        headers.slideDown();
-        shows.slideDown();
+    for (var i = 0; i < guests.length; i++) {
+        container.append(createGuestBlock(i));
+        addShows(i);
     }
 
-    return false;
-});
+    accordion = container.accordion({
+        heightStyle: 'content'
+    });
 
-$('#reset').click(function () {
-    $('#filter').val('').keyup();
+    $('#filter').keyup(function () {
+        var filterText = $(this).val();
+        var headers = $('#output h3');
+        var shows = $('#output .shows[aria-hidden="false"]');
+
+        if (filterText.length > 0) {
+            var containing = headers.filter(function () {
+                var regex = new RegExp('\\b' + filterText, 'i');
+                return regex.test($(this).text());
+            }).slideDown();
+
+            headers.not(containing).slideUp();
+            if (shows.prev().not(containing).length > 1) {
+                shows.show();
+            } else {
+                shows.hide();
+            }
+        } else {
+            headers.slideDown();
+            shows.slideDown();
+        }
+
+        return false;
+    });
+
+    $('#reset').click(function () {
+        $('#filter').val('').keyup();
+    });
 });

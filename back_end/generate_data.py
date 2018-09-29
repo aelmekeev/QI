@@ -52,9 +52,9 @@ def add_episode(row, current_season):
     episode['episode_total'] = number[1][1:-1]
   
   if row[LINK_ENG] != '': episode['eng'] = get_link(row[LINK_ENG])
-  if row[LINK_RUS] != '': episode['rus'] = get_link(row[LINK_ENG])
-  if row[LINK_ENG_XL] != '': episode['eng_xl'] = get_link(row[LINK_ENG])
-  if row[LINK_RUS_XL] != '': episode['rus_xl'] = get_link(row[LINK_ENG])
+  if row[LINK_RUS] != '': episode['rus'] = get_link(row[LINK_RUS])
+  if row[LINK_ENG_XL] != '': episode['eng_xl'] = get_link(row[LINK_ENG_XL])
+  if row[LINK_RUS_XL] != '': episode['rus_xl'] = get_link(row[LINK_RUS_XL])
   if row[NOTE] != '': episode['note'] = row[NOTE]
 
   air_dates = row[AIR_DATE].split('\n')

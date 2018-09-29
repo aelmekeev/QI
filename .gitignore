@@ -3,3 +3,6 @@ data/*.js
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
+
+# vk api temp file
+vk_config.v2.json

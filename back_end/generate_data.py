@@ -1,8 +1,11 @@
 # encoding: utf-8
 
+from argparse import ArgumentParser
 import csv
 import json
+import re
 from datetime import datetime
+import vk_api
 
 EPISODE_NUMBER = 0
 EPISODE_NAME = 1
@@ -20,6 +23,9 @@ STEPHEN = 'Stephen Fry'
 THE_AUDIENCE = 'The Audience'
 NO_GUESTS = ['', 'N/A', 'Compilation episode']
 
+VK_LINK_PREFIX = 'http://vk.com/videos-18564830?section=album_'
+VK_LINK_PREFIX_LENGTH = VK_LINK_PREFIX.len()
+
 links = set()
 seasons = []
 people = [{'name': STEPHEN, 'shows': [], 'winner': []}, {'name': ALAN, 'shows': [], 'winner': []}]
@@ -33,9 +39,16 @@ def format_date(date_string):
   else:
     return date_string
 
-def get_link(link):
+def get_link(link, episode_number):
   if 'album-' in link and 'video-' in link:
-    return link[44:]
+    match_video_id = re.match('.+video-([\d_]+).+', link)
+    if match_video_id and match_video_id[1]:
+      if vk_api.video.get(videos='-{0}'.format(match_video_id[1]))['count'] == 1:
+        return link[VK_LINK_PREFIX_LENGTH:]
+      else:
+        print('WARNING: video for episode {0} ({1}) does not exist.'.format(episode_number, link))
+    else:
+      print(link)
   else:
     return link
 
@@ -50,11 +63,12 @@ def add_episode(row, current_season):
   episode['episode'] = number[0]
   if len(number) != 1:
     episode['episode_total'] = number[1][1:-1]
-  
-  if row[LINK_ENG] != '': episode['eng'] = get_link(row[LINK_ENG])
-  if row[LINK_RUS] != '': episode['rus'] = get_link(row[LINK_RUS])
-  if row[LINK_ENG_XL] != '': episode['eng_xl'] = get_link(row[LINK_ENG_XL])
-  if row[LINK_RUS_XL] != '': episode['rus_xl'] = get_link(row[LINK_RUS_XL])
+
+  episode_coor = '{0} - {1}'.format(episode[name], row[EPISODE_NUMBER])
+  if row[LINK_ENG] != '': episode['eng'] = get_link(row[LINK_ENG], episode_coor)
+  if row[LINK_RUS] != '': episode['rus'] = get_link(row[LINK_RUS], episode_coor)
+  if row[LINK_ENG_XL] != '': episode['eng_xl'] = get_link(row[LINK_ENG_XL], episode_coor)
+  if row[LINK_RUS_XL] != '': episode['rus_xl'] = get_link(row[LINK_RUS_XL], episode_coor)
   if row[NOTE] != '': episode['note'] = row[NOTE]
 
   air_dates = row[AIR_DATE].split('\n')
@@ -92,12 +106,34 @@ def verify_winners():
   for show in all_shows_ids.difference(shows_with_winners):
     episode = episodes[show]
     print(seasons[episode['season']], episode['episode'], '-', episode['name'])
-  
+
+
+def vk_login(login, password):
+    vk_session = vk_api.VkApi(login, password)
+
+    try:
+        vk_session.auth(token_only=True)
+    except vk_api.AuthError as error_msg:
+        print(error_msg)
+        return
+
+    return vk_session.get_api()
+
+
+parser = ArgumentParser()
+parser.add_argument("-p", "--password", dest="vk_password",
+                    required=True, help="your vk password")
+parser.add_argument("-u", "--username", dest="vk_username",
+                    required=True, help="your vk username, usually email")
+
+args = parser.parse_args()
+
+vk_api = vk_login(args.vk_username, args.vk_password)
 
 with open('../data/data.csv', encoding='utf-8', mode='r') as input, open('../data/data.js', encoding='utf-8', mode='w') as output:
   # open csv files
   input = csv.reader(input, delimiter=',')
-  
+
   current_season = -1;
   
   for row in input:

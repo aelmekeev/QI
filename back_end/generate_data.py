@@ -23,8 +23,8 @@ STEPHEN = 'Stephen Fry'
 THE_AUDIENCE = 'The Audience'
 NO_GUESTS = ['', 'N/A', 'Compilation episode']
 
-VK_LINK_PREFIX = 'http://vk.com/videos-18564830?section=album_'
-VK_LINK_PREFIX_LENGTH = VK_LINK_PREFIX.len()
+VK_LINK_PREFIX = 'https://vk.com/videos-18564830?section=album_'
+VK_LINK_PREFIX_LENGTH = len(VK_LINK_PREFIX)
 
 links = set()
 seasons = []
@@ -64,7 +64,7 @@ def add_episode(row, current_season):
   if len(number) != 1:
     episode['episode_total'] = number[1][1:-1]
 
-  episode_coor = '{0} - {1}'.format(episode[name], row[EPISODE_NUMBER])
+  episode_coor = '{0} - {1}'.format(episode['name'], row[EPISODE_NUMBER])
   if row[LINK_ENG] != '': episode['eng'] = get_link(row[LINK_ENG], episode_coor)
   if row[LINK_RUS] != '': episode['rus'] = get_link(row[LINK_RUS], episode_coor)
   if row[LINK_ENG_XL] != '': episode['eng_xl'] = get_link(row[LINK_ENG_XL], episode_coor)

@@ -1,4 +1,4 @@
-VK_LINK_PREFIX = 'http://vk.com/videos-18564830?section=album_';
+VK_LINK_PREFIX = 'https://vk.com/videos-18564830?section=album_';
 
 function getLink(link) {
     if (link.indexOf('video-') > -1 && link.indexOf('album-') > -1) {

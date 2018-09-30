@@ -20,8 +20,10 @@ LINK_RUS_XL = 9
 
 ALAN = 'Alan Davies'
 STEPHEN = 'Stephen Fry'
+SANDI = 'Sandi Toksvig'
 THE_AUDIENCE = 'The Audience'
 NO_GUESTS = ['', 'N/A', 'Compilation episode']
+HOST_CHANGE_SEASON_ID = 16
 
 VK_LINK_PREFIX = 'https://vk.com/videos-18564830?section=album_'
 VK_LINK_PREFIX_LENGTH = len(VK_LINK_PREFIX)
@@ -154,11 +156,16 @@ with open('../data/data.csv', encoding='utf-8', mode='r') as input, open('../dat
       for guest_name in panel:
         if guest_name not in NO_GUESTS:
           log_guest(row, guest_name, episode_id)
-            
-      log_guest(row, STEPHEN, episode_id)
-      log_guest(row, THE_AUDIENCE, episode_id)
-      if 'No Alan' not in row[NOTE]:
-        log_guest(row, ALAN, episode_id)
+
+      if row[GUESTS] not in NO_GUESTS:
+        log_guest(row, THE_AUDIENCE, episode_id)
+        # handle host change
+        if current_season < HOST_CHANGE_SEASON_ID:
+          log_guest(row, STEPHEN, episode_id)
+        else:
+          log_guest(row, SANDI, episode_id)
+        if 'No Alan' not in row[NOTE]:
+          log_guest(row, ALAN, episode_id)
 
   verify_winners()
 

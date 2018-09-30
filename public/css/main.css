@@ -20,3 +20,10 @@ input {
   margin-left: 10px;
   padding-right: 4px;
 }
+
+/*github button*/
+#header span {
+  vertical-align: middle;
+  display: inline-block;
+  margin-left: 50px;
+}

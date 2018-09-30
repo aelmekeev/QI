@@ -20,7 +20,7 @@ function getSingleLink(l1, l2, l3, l4, l1empty, l2empty, l3empty, l4empty) {
         singleLink = l4;
     }
 
-    return VK_LINK_PREFIX + singleLink;
+    return singleLink;
 }
 
 function addShowLink(showBlock, link, text, addComma) {

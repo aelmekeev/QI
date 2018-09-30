@@ -49,7 +49,7 @@ function createShowWithSeveralLinks(showBlock, text, guestId, show) {
     addComma = addShowLink(showBlock, show.eng, 'eng', addComma) || addComma;
     addComma = addShowLink(showBlock, show.eng_xl, 'eng_xl', addComma) || addComma;
     addComma = addShowLink(showBlock, show.rus, 'rus', addComma) || addComma;
-    addComma = addShowLink(showBlock, show.rus_xl, 'rus_xl', addComma) || addComma;
+    addShowLink(showBlock, show.rus_xl, 'rus_xl', addComma);
 
     showBlock.append($('<span />', {
         text: ')'

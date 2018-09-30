@@ -5,8 +5,9 @@ With this tool you can:
 
 * see list of participants of all QE tv episodes
 * find out list of episodes where particular person was on the show including:
-  * links to the recordings of the show &mdash; mostly from [VK group "Quite Interesting"](http://vk.com/quiteinteresting)) with Russian subtitles, but also with English subtitles
-  * air date of each show is available in a popup
+  * links to the recordings of the show &mdash; mostly from [VK group "Quite Interesting"](http://vk.com/quiteinteresting)) with Russian/English subtitles;
+  * air date of each show (available in a tooltip);
+  * is this person win the show or not.
 
 ## Usage
 
@@ -27,14 +28,14 @@ In order to do this you just need to simply run backend script like this:
 python generate_data.py
 ```
 
-Input data is `data.csv` from data directory. Output is `data.js` which will be added into data directory.
+Input data is `data.csv` from data directory. Output is `data.js` which will be added into data directory. Copy it to frontend part once you make sure that it's in a good state.
+
+Note: `generate_data.py` uses `vk_api` library. Use below command to install it:
+
+```
+pip install vk_api
+```
 
 ### Front-end
 
-Since for visualization was used [JSFiddle](https://jsfiddle.net/) front-end part consists of html, css and js files that you can just copy-paste to your fiddle. Besides this code you will also need to:
-
-1. enable in JSFiddle interface:
-   1. JQuery Framework (2.1.4);
-   2. enable JQuery UI library (1.11.4);
-2. include as external resource:
-   1. `data.js` which you can found in data directory of this project after compliting of back-end process.
+The result is deployed on: [https://qi-guest-list.herokuapp.com/](https://qi-guest-list.herokuapp.com/).
